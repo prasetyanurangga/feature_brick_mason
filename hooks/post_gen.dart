@@ -4,91 +4,95 @@ import 'package:mason/mason.dart';
 void run(HookContext context) {
   final featureName = context.vars['feature_name'];
   final isWithDI = (context.vars['is_with_di'] == true);
-  final packageName = 'mobile_cityzen'; // Define your package name here dynamically if needed.
-  final pascalCaseFeature = toPascalCase(featureName);
-  final snakeCaseFeature = toSnakeCase(featureName);
 
-  print('Current Directory: ${Directory.current}');
-  final diFile = File('../di/injector.dart');
+  if (isWithDI) {
 
-  print(diFile.existsSync());
-  
-  if (diFile.existsSync() && isWithDI) {
-    String fileContent = diFile.readAsStringSync();
+    final pascalCaseFeature = toPascalCase(featureName);
+    final snakeCaseFeature = toSnakeCase(featureName);
 
-    // Create import statements
-    final importStatements = '''
-  import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource.dart';
-  import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource_impl.dart';
-  import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource.dart';
-  import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource_impl.dart';
-  import '../features/$snakeCaseFeature/data/repositories/${snakeCaseFeature}_repository_impl.dart';
-  import '../features/$snakeCaseFeature/domain/repositories/${snakeCaseFeature}_repository.dart';
-  import '../features/$snakeCaseFeature/domain/use_cases/fetch_${snakeCaseFeature}_use_case.dart';
+    print('Current Directory: ${Directory.current}');
+    final diFile = File('../di/injector.dart');
 
-''';
+    print(diFile.existsSync());
+    
+    if (diFile.existsSync()) {
+      String fileContent = diFile.readAsStringSync();
 
-    // Check if the imports already exist and add if not
-    if (!fileContent.contains(importStatements.trim())) {
-      fileContent = addImports(fileContent, importStatements);
-    }
+      // Create import statements
+      final importStatements = '''
+    import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource.dart';
+    import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource_impl.dart';
+    import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource.dart';
+    import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource_impl.dart';
+    import '../features/$snakeCaseFeature/data/repositories/${snakeCaseFeature}_repository_impl.dart';
+    import '../features/$snakeCaseFeature/domain/repositories/${snakeCaseFeature}_repository.dart';
+    import '../features/$snakeCaseFeature/domain/use_cases/fetch_${snakeCaseFeature}_use_case.dart';
 
-    // Inject to provideDataSources
-    if (fileContent.contains('void provideDataSources() {')) {
-      final dataSourceInjection = '''
-    // $pascalCaseFeature
-    injector.registerFactory<${pascalCaseFeature}LocalDataSource>(
-        () => ${pascalCaseFeature}LocalDataSourceImpl(secureStorage: injector.get<SecureStorage>()));
-    injector.registerFactory<${pascalCaseFeature}RemoteDataSource>(
-        () => ${pascalCaseFeature}RemoteDataSourceImpl(networkService: injector.get<NetworkService>()));
-      ''';
+  ''';
 
-      fileContent = injectIntoFunction(
-        fileContent, 
-        'provideDataSources', 
-        dataSourceInjection
+      // Check if the imports already exist and add if not
+      if (!fileContent.contains(importStatements.trim())) {
+        fileContent = addImports(fileContent, importStatements);
+      }
+
+      // Inject to provideDataSources
+      if (fileContent.contains('void provideDataSources() {')) {
+        final dataSourceInjection = '''
+      // $pascalCaseFeature
+      injector.registerFactory<${pascalCaseFeature}LocalDataSource>(
+          () => ${pascalCaseFeature}LocalDataSourceImpl(secureStorage: injector.get<SecureStorage>()));
+      injector.registerFactory<${pascalCaseFeature}RemoteDataSource>(
+          () => ${pascalCaseFeature}RemoteDataSourceImpl(networkService: injector.get<NetworkService>()));
+        ''';
+
+        fileContent = injectIntoFunction(
+          fileContent, 
+          'provideDataSources', 
+          dataSourceInjection
+        );
+      }
+
+      // Inject to provideRepositories
+      if (fileContent.contains('void provideRepositories() {')) {
+        final repositoryInjection = '''
+      // $pascalCaseFeature
+      injector.registerFactory<${pascalCaseFeature}Repository>(
+          () => ${pascalCaseFeature}RepositoryImpl(
+            localDataSource: injector.get<${pascalCaseFeature}LocalDataSource>(),
+            remoteDataSource: injector.get<${pascalCaseFeature}RemoteDataSource>(),
+          ));
+        ''';
+
+        fileContent = injectIntoFunction(
+          fileContent, 
+          'provideRepositories', 
+          repositoryInjection
+        );
+      }
+
+      // Inject to provideUseCases
+      if (fileContent.contains('void provideUseCases() {')) {
+        final useCaseInjection = '''
+      // $pascalCaseFeature
+      injector.registerFactory<Fetch${pascalCaseFeature}UseCase>(
+        () => Fetch${pascalCaseFeature}UseCase(
+          repository: injector.get<${pascalCaseFeature}Repository>(),
+        ),
       );
+        ''';
+
+        fileContent = injectIntoFunction(
+          fileContent, 
+          'provideUseCases', 
+          useCaseInjection
+        );
+      }
+
+      // Write the modified content back to di.dart
+      diFile.writeAsStringSync(fileContent);
     }
-
-    // Inject to provideRepositories
-    if (fileContent.contains('void provideRepositories() {')) {
-      final repositoryInjection = '''
-    // $pascalCaseFeature
-    injector.registerFactory<${pascalCaseFeature}Repository>(
-        () => ${pascalCaseFeature}RepositoryImpl(
-          localDataSource: injector.get<${pascalCaseFeature}LocalDataSource>(),
-          remoteDataSource: injector.get<${pascalCaseFeature}RemoteDataSource>(),
-        ));
-      ''';
-
-      fileContent = injectIntoFunction(
-        fileContent, 
-        'provideRepositories', 
-        repositoryInjection
-      );
-    }
-
-    // Inject to provideUseCases
-    if (fileContent.contains('void provideUseCases() {')) {
-      final useCaseInjection = '''
-    // $pascalCaseFeature
-    injector.registerFactory<Fetch${pascalCaseFeature}UseCase>(
-      () => Fetch${pascalCaseFeature}UseCase(
-        repository: injector.get<${pascalCaseFeature}Repository>(),
-      ),
-    );
-      ''';
-
-      fileContent = injectIntoFunction(
-        fileContent, 
-        'provideUseCases', 
-        useCaseInjection
-      );
-    }
-
-    // Write the modified content back to di.dart
-    diFile.writeAsStringSync(fileContent);
   }
+
 }
 
 String injectIntoFunction(String fileContent, String functionName, String injection) {
