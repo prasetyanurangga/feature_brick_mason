@@ -3,16 +3,17 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) {
   final featureName = context.vars['feature_name'];
+  final isWithDI = context.vars['is_with_di'] ?? false;
   final packageName = 'mobile_cityzen'; // Define your package name here dynamically if needed.
   final pascalCaseFeature = toPascalCase(featureName);
   final snakeCaseFeature = toSnakeCase(featureName);
 
-  print('Current Directory: ${Directory.current} test');
+  print('Current Directory: ${Directory.current}');
   final diFile = File('../di/injector.dart');
 
   print(diFile.existsSync());
   
-  if (diFile.existsSync()) {
+  if (diFile.existsSync() && isWithDI) {
     String fileContent = diFile.readAsStringSync();
 
     // Create import statements
