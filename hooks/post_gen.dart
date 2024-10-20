@@ -3,7 +3,6 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) {
   final featureName = context.vars['feature_name'];
-  final isWithDI = context.vars['is_with_di'] ?? false;
   final packageName = 'mobile_cityzen'; // Define your package name here dynamically if needed.
   final pascalCaseFeature = toPascalCase(featureName);
   final snakeCaseFeature = toSnakeCase(featureName);
@@ -13,7 +12,7 @@ void run(HookContext context) {
 
   print(diFile.existsSync());
   
-  if (diFile.existsSync() && isWithDI) {
+  if (diFile.existsSync()) {
     String fileContent = diFile.readAsStringSync();
 
     // Create import statements
