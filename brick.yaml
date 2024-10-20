@@ -44,7 +44,7 @@ vars:
     default: false
     prompt: Do you want to generate the widget folder?
 
-  is_with_dio:
+  is_with_di:
     type: boolean
     description: Is With Dependency Injection
     default: false
