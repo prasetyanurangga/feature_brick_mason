@@ -3,7 +3,7 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) {
   final featureName = context.vars['feature_name'];
-  final isWithDI = context.vars['is_with_di'] ?? false;
+  final isWithDI = (context.vars['is_with_di'] == true);
   final packageName = 'mobile_cityzen'; // Define your package name here dynamically if needed.
   final pascalCaseFeature = toPascalCase(featureName);
   final snakeCaseFeature = toSnakeCase(featureName);
