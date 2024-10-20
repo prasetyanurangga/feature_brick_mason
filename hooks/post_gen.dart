@@ -7,7 +7,7 @@ void run(HookContext context) {
   final pascalCaseFeature = toPascalCase(featureName);
   final snakeCaseFeature = toSnakeCase(featureName);
 
-  print('Current Directory: ${Directory.current}');
+  print('Current Directory: ${Directory.current} test');
   final diFile = File('../di/injector.dart');
 
   print(diFile.existsSync());
