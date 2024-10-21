@@ -14,7 +14,7 @@ void run(HookContext context) {
     final snakeCaseFeature = toSnakeCase(featureName);
 
     print('Current Directory: ${Directory.current}');
-    final diFile = File('../di/Injector.dart');
+    final diFile = File(isGlobal ? '../../di/Injector.dart' : '../di/Injector.dart');
 
     print(diFile.existsSync());
     
