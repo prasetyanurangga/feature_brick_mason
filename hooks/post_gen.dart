@@ -4,10 +4,8 @@ import 'package:mason/mason.dart';
 void run(HookContext context) {
   final featureName = context.vars['feature_name'];
   final isWithDI = (context.vars['is_with_di'] == true);
-
-  final outputDir = context.vars['output_dir'];
-
-  context.logger.info('Output Directory: ${outputDir}');
+  final bool isGlobal = context.vars['is_global'] as bool;
+  final String outputDirectory = isGlobal ? 'shared/global_features' : 'features';
 
 
   if (isWithDI) {
@@ -25,13 +23,13 @@ void run(HookContext context) {
 
       // Create import statements
       final importStatements = '''
-    import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource.dart';
-    import '../features/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource_impl.dart';
-    import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource.dart';
-    import '../features/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource_impl.dart';
-    import '../features/$snakeCaseFeature/data/repositories/${snakeCaseFeature}_repository_impl.dart';
-    import '../features/$snakeCaseFeature/domain/repositories/${snakeCaseFeature}_repository.dart';
-    import '../features/$snakeCaseFeature/domain/use_cases/fetch_${snakeCaseFeature}_use_case.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/data/datasource/local/${snakeCaseFeature}_local_datasource_impl.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/data/datasource/remote/${snakeCaseFeature}_remote_datasource_impl.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/data/repositories/${snakeCaseFeature}_repository_impl.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/domain/repositories/${snakeCaseFeature}_repository.dart';
+    import '../${outputDirectory}/$snakeCaseFeature/domain/use_cases/fetch_${snakeCaseFeature}_use_case.dart';
 
   ''';
 
