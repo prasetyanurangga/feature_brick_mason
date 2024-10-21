@@ -2,7 +2,6 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) {
   final bool isGlobal = context.vars['is_global'] as bool;
-  final String featureName = context.vars['feature_name'] as String;
 
   // Determine the output directory based on whether it's global
   String outputDirectory;
@@ -11,9 +10,9 @@ void run(HookContext context) {
     context.vars['is_with_page'] = false;
     context.vars['is_with_widget'] = false;
     context.logger.info('Global mode enabled: skipping page and widget generation.');
-    outputDirectory = 'lib/shared/global_features/$featureName';
+    outputDirectory = 'shared/global_features';
   } else {
-    outputDirectory = 'lib/features/$featureName';
+    outputDirectory = 'features';
   }
 
   // Create the output directory if it doesn't exist
