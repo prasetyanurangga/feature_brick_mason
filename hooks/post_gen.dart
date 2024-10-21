@@ -5,6 +5,11 @@ void run(HookContext context) {
   final featureName = context.vars['feature_name'];
   final isWithDI = (context.vars['is_with_di'] == true);
 
+  final outputDir = Directory(context.vars['output_dir'] as String);
+
+  context.logger.info('Output Directory: ${outputDir.path}');
+
+
   if (isWithDI) {
 
     final pascalCaseFeature = toPascalCase(featureName);
