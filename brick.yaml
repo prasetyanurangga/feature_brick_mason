@@ -26,12 +26,6 @@ environment:
 #  * a list of values (enums only)
 #  * an optional separator (list only)
 vars:
-  
-  is_global:
-    type: boolean
-    description: Is Global
-    default: false
-    prompt: Do you want to make global feature?
 
   feature_name:
     type: string
