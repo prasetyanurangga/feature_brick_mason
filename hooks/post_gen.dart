@@ -5,9 +5,9 @@ void run(HookContext context) {
   final featureName = context.vars['feature_name'];
   final isWithDI = (context.vars['is_with_di'] == true);
 
-  final outputDir = Directory(context.vars['output_dir'] as String);
+  final outputDir = context.vars['output_dir'];
 
-  context.logger.info('Output Directory: ${outputDir.path}');
+  context.logger.info('Output Directory: ${outputDir}');
 
 
   if (isWithDI) {
