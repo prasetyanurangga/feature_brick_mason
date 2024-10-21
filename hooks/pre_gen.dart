@@ -1,5 +1,5 @@
 import 'package:mason/mason.dart';
-import 'dart:io';
+import 'dart:io'
 
 void run(HookContext context) {
   final bool isGlobal = context.vars['is_global'] as bool;
@@ -11,7 +11,7 @@ void run(HookContext context) {
     context.vars['is_with_page'] = false;
     context.vars['is_with_widget'] = false;
     context.logger.info('Global mode enabled: skipping page and widget generation.');
-    outputDirectory = 'shared\/global_features';
+    outputDirectory = 'shared/global_features';
   } else {
     outputDirectory = 'features';
   }
