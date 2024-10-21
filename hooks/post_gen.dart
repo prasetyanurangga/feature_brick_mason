@@ -122,7 +122,7 @@ String addImports(String fileContent, String imports) {
 }
 
 String toPascalCase(String text) {
-  return text.split('_').map((str) => str[0].toUpperCase() + str.substring(1)).join('');
+  return text.split(' ').map((str) => str[0].toUpperCase() + str.substring(1)).join('');
 }
 
 String toSnakeCase(String text) {
