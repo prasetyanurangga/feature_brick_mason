@@ -38,15 +38,18 @@ import '../../shared/local/secure_storage/secure_storage_impl.dart';
 
 void setup{{feature_name.pascalCase()}}Injector(GetIt getIt) {
 
-  getIt.registerFactory<${pascalCaseFeature}LocalDataSource>(
-      () => ${pascalCaseFeature}LocalDataSourceImpl(secureStorage: injector.get<SecureStorage>()));
-  getIt.registerFactory<${pascalCaseFeature}RemoteDataSource>(
-      () => ${pascalCaseFeature}RemoteDataSourceImpl(networkService: injector.get<NetworkService>()));
 
+  // Data Sources
+  getIt.registerFactory<${pascalCaseFeature}LocalDataSource>(
+      () => ${pascalCaseFeature}LocalDataSourceImpl(secureStorage: getIt.get<SecureStorage>()));
+  getIt.registerFactory<${pascalCaseFeature}RemoteDataSource>(
+      () => ${pascalCaseFeature}RemoteDataSourceImpl(networkService: getIt.get<NetworkService>()));
+
+  // Repositories
   getIt.registerFactory<${pascalCaseFeature}Repository>(
     () => ${pascalCaseFeature}RepositoryImpl(
-      localDataSource: injector.get<${pascalCaseFeature}LocalDataSource>(),
-      remoteDataSource: injector.get<${pascalCaseFeature}RemoteDataSource>(),
+      localDataSource: getIt.get<${pascalCaseFeature}LocalDataSource>(),
+      remoteDataSource: getIt.get<${pascalCaseFeature}RemoteDataSource>(),
     ));
 
   // Example of how to register a use case
