@@ -40,22 +40,22 @@ void setup{{feature_name.pascalCase()}}Injector(GetIt getIt) {
 
 
   // Data Sources
-  getIt.registerFactory<${pascalCaseFeature}LocalDataSource>(
-      () => ${pascalCaseFeature}LocalDataSourceImpl(secureStorage: getIt.get<SecureStorage>()));
-  getIt.registerFactory<${pascalCaseFeature}RemoteDataSource>(
-      () => ${pascalCaseFeature}RemoteDataSourceImpl(networkService: getIt.get<NetworkService>()));
+  getIt.registerFactory<{{feature_name.pascalCase()}}LocalDataSource>(
+      () => {{feature_name.pascalCase()}}LocalDataSourceImpl(secureStorage: getIt.get<SecureStorage>()));
+  getIt.registerFactory<{{feature_name.pascalCase()}}RemoteDataSource>(
+      () => {{feature_name.pascalCase()}}RemoteDataSourceImpl(networkService: getIt.get<NetworkService>()));
 
   // Repositories
-  getIt.registerFactory<${pascalCaseFeature}Repository>(
-    () => ${pascalCaseFeature}RepositoryImpl(
-      localDataSource: getIt.get<${pascalCaseFeature}LocalDataSource>(),
-      remoteDataSource: getIt.get<${pascalCaseFeature}RemoteDataSource>(),
+  getIt.registerFactory<{{feature_name.pascalCase()}}Repository>(
+    () => {{feature_name.pascalCase()}}RepositoryImpl(
+      localDataSource: getIt.get<{{feature_name.pascalCase()}}LocalDataSource>(),
+      remoteDataSource: getIt.get<{{feature_name.pascalCase()}}RemoteDataSource>(),
     ));
 
   // Example of how to register a use case
-  // getIt.registerFactory<Fetch${pascalCaseFeature}UseCase>(
-  //   () => Fetch${pascalCaseFeature}UseCase(
-  //     repository: injector.get<${pascalCaseFeature}Repository>(),
+  // getIt.registerFactory<Fetch{{feature_name.pascalCase()}}UseCase>(
+  //   () => Fetch{{feature_name.pascalCase()}}UseCase(
+  //     repository: injector.get<{{feature_name.pascalCase()}}Repository>(),
   //   ),
   // );
 }
