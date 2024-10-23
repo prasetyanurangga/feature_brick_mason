@@ -1,11 +1,11 @@
 
 import 'package:get_it/get_it.dart';
 
-import 'data/datasource/{{feature_name.snakeCase()}}_local_data_source.dart';
-import 'data/datasource/{{feature_name.snakeCase()}}_local_data_source_impl.dart';
+import 'data/datasource/{{feature_name.snakeCase()}}_local_datasource.dart';
+import 'data/datasource/{{feature_name.snakeCase()}}_local_datasource_impl.dart';
 
-import 'data/datasource/{{feature_name.snakeCase()}}_remote_data_source.dart';
-import 'data/datasource/{{feature_name.snakeCase()}}_remote_data_source_impl.dart';
+import 'data/datasource/{{feature_name.snakeCase()}}_remote_datasource.dart';
+import 'data/datasource/{{feature_name.snakeCase()}}_remote_datasource_impl.dart';
 
 import 'data/repositories/{{feature_name.snakeCase()}}_repository_impl.dart';
 import 'domain/repositories/{{feature_name.snakeCase()}}_repository.dart';
