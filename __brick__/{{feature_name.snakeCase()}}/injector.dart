@@ -53,7 +53,7 @@ void setup{{feature_name.pascalCase()}}Injector(GetIt getIt) {
     ));
 
   // Example of how to register a use case
-  // getIt.registerFactory<Fetch{{feature_name.pascalCase()}}UseCase>(
+  // getIt.registerLazySingleton<Fetch{{feature_name.pascalCase()}}UseCase>(
   //   () => Fetch{{feature_name.pascalCase()}}UseCase(
   //     repository: injector.get<{{feature_name.pascalCase()}}Repository>(),
   //   ),
