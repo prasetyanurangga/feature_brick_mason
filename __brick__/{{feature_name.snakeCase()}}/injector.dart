@@ -40,13 +40,13 @@ void setup{{feature_name.pascalCase()}}Injector(GetIt getIt) {
 
 
   // Data Sources
-  getIt.registerFactory<{{feature_name.pascalCase()}}LocalDataSource>(
+  getIt.registerLazySingleton<{{feature_name.pascalCase()}}LocalDataSource>(
       () => {{feature_name.pascalCase()}}LocalDataSourceImpl(secureStorage: getIt.get<SecureStorage>()));
-  getIt.registerFactory<{{feature_name.pascalCase()}}RemoteDataSource>(
+  getIt.registerLazySingleton<{{feature_name.pascalCase()}}RemoteDataSource>(
       () => {{feature_name.pascalCase()}}RemoteDataSourceImpl(networkService: getIt.get<NetworkService>()));
 
   // Repositories
-  getIt.registerFactory<{{feature_name.pascalCase()}}Repository>(
+  getIt.registerLazySingleton<{{feature_name.pascalCase()}}Repository>(
     () => {{feature_name.pascalCase()}}RepositoryImpl(
       localDataSource: getIt.get<{{feature_name.pascalCase()}}LocalDataSource>(),
       remoteDataSource: getIt.get<{{feature_name.pascalCase()}}RemoteDataSource>(),
